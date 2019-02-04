@@ -52,7 +52,7 @@ h1{
   width:100%;
 }
 h1 > div{
-  font-size:3em;
+  font-size:2rem;
   display:inline-block;
   color:orange;
 	border-right: 0.1em solid;
