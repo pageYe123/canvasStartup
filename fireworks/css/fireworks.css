@@ -21,21 +21,54 @@ html, body {
   height: 100%;
   background: #000;
   overflow: hidden;
+  user-select: none;
+  position: relative;
 }
 
 #library {
   display: none;
 }
 
-canvas {
-  -webkit-transform: translateZ(0);
-}
 
 audio{
   display: none;
 }
 
+@keyframes typing {
+  from {
+    width:0;
+  }
+}
+@keyframes blink-caret {
+  50% {
+    border-color:transparent;
+  }
+}
 h1{
-  color:white;
   text-align:center;
+  margin:0 auto;
+  position: absolute;
+  width:100%;
+}
+h1 > div{
+  font-size:1em;
+  display:inline-block;
+  color:orange;
+	border-right: 0.1em solid;
+	width:11em;
+  white-space:nowrap;
+  margin:1em 0;
+	overflow:hidden;
+	animation:typing 7s steps(11,end),/* # of steps = # of chars */
+	blink-caret 0.5s step-end infinite alternate;
+}
+
+.firecrackers{
+  width:282px;
+  height:539px;
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform-origin: 0 bottom;
+  transform:scale(0.25) translate(-50%,0);
 }

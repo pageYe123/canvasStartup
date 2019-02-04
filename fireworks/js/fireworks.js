@@ -23,7 +23,8 @@ var Fireworks = (function() {
       fireworkCanvas = null,
       fireworkContext = null,
       viewportWidth = 0,
-      viewportHeight = 0;
+      viewportHeight = 0,
+      bangAudioSrc = "./explosionSound.mp3";
 
   /**
    * Create DOM elements and get your game on
@@ -40,23 +41,39 @@ var Fireworks = (function() {
     // and another one for, like, an off screen buffer
     // because that's rad n all
     fireworkCanvas = document.createElement('canvas');
+    // document.body.appendChild(fireworkCanvas, document.body.lastElementChild);
     fireworkContext = fireworkCanvas.getContext('2d');
 
     // set up the colours for the fireworks
-    createFireworkPalette(12);
+    createFireworkPalette(12);//must be the pixel size of the big-glow.png
 
     // set the dimensions on the canvas
     setMainCanvasDimensions();
 
     // add the canvas in
     document.body.appendChild(mainCanvas);
-    document.addEventListener('mouseup', createFirework, true);
-    document.addEventListener('touchend', createFirework, true);
+    var fn = throttle(createFirework, 100);
+    document.addEventListener('mouseup', fn, true);
+    document.addEventListener('touchend', fn, true);
 
     // and now we set off
     update();
   }
-
+  /**
+   * debounce the intensive events
+   */
+  function throttle(method, timeGap, context){
+    context = context || this;
+    var lastTime = 0, timeGap = timeGap || 200;
+    return function(){
+      var now = new Date().getTime();
+      if(now - lastTime <= timeGap){
+        return;
+      }
+      lastTime = now;
+      method.call(context);
+    }
+  }
   /**
    * Pass through function to create a
    * new firework on touch / click
@@ -121,6 +138,19 @@ var Fireworks = (function() {
   }
 
   /**
+   * when the fireworks explode, it makes the sound "bang"
+   */
+  function echoExplosionSound() {
+    var audio = document.createElement("audio");
+    audio.setAttribute("autoplay","autoplay");
+    audio.addEventListener('ended', function () {
+      document.body.removeChild(audio);
+    }, false);
+    audio.src = bangAudioSrc;
+    document.body.appendChild(audio);
+  }
+
+  /**
    * Passes over all particles particles
    * and draws them
    */
@@ -147,6 +177,7 @@ var Fireworks = (function() {
           } else {
             FireworkExplosions.circle(firework);
           }
+          echoExplosionSound();
         }
       }
 
@@ -267,7 +298,6 @@ Particle.prototype = {
       // ... just like in real life! Woo! xD
       this.alpha -= this.fade;
     } else {
-
       var distance = (this.target.y - this.pos.y);
 
       // ease the position
