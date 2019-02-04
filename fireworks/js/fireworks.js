@@ -52,7 +52,7 @@ var Fireworks = (function() {
 
     // add the canvas in
     document.body.appendChild(mainCanvas);
-    var fn = throttle(createFirework, 180);
+    var fn = throttle(createFirework, 220);
     document.addEventListener('mouseup', fn, true);
     document.addEventListener('touchend', fn, true);
 
