@@ -51,8 +51,8 @@ h1{
   top:20%;
   width:100%;
 }
-h1 > div{
-  font-size:2rem;
+.greetings{
+  font-size:1.5rem;
   display:inline-block;
   color:orange;
 	border-right: 0.1em solid;
